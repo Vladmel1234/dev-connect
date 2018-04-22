@@ -9,7 +9,7 @@ const app = express()
 
 app.use(logger('dev'))
 app.use(cors)
-// connection to mongosb
+// connection to mongodb
 
 mongoose
   .connect(process.env.DB_HOST)
