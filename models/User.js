@@ -21,6 +21,18 @@ export default class User {
       }
     }
   }
+
+  async findUserByEmailAndAuthorize ({ email, password }) {
+    try {
+      const curentUser = await UserSchema.findOne({ email })
+      if (!curentUser) {
+        return 404
+      }
+      return await userHelpers.authorizePassword(password, curentUser)
+    } catch (error) {
+      return error
+    }
+  }
 }
 
 function createGravatar (email) {

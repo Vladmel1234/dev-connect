@@ -1,8 +1,11 @@
 import express from 'express'
 import { User } from '../../models'
 
-var router = express.Router()
+const router = express.Router()
+
 router.post('/register', getModels, saveUser, returnSaveUser)
+
+router.post('/login', getModels, authorrizeUser, retrunLoginUser)
 
 async function getModels (req, res, next) {
   try {
@@ -19,6 +22,30 @@ async function saveUser (req, res, next) {
     next()
   } catch (err) {
     next(err)
+  }
+}
+
+async function authorrizeUser (req, res, next) {
+  try {
+    req.token = await req.user.findUserByEmailAndAuthorize(req.body)
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
+
+function retrunLoginUser (req, res) {
+  switch (req.token) {
+    case 400:
+      res.status(req.token).json({ password: 'Password Incorect' })
+      break
+    case 404:
+      res.status(req.token).json({ email: 'User not found' })
+      break
+
+    default:
+      res.json({ success: true, token: `Bearer ${req.token}` })
+      break
   }
 }
 
