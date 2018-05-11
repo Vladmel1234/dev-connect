@@ -1,11 +1,15 @@
 import express from 'express'
 import { User } from '../../models'
+import passport from 'passport'
 
 const router = express.Router()
+const authentification = passport.authenticate('jwt', { session: false })
 
 router.post('/register', getModels, saveUser, returnSaveUser)
 
 router.post('/login', getModels, authorrizeUser, retrunLoginUser)
+
+router.get('/current', getModels, authentification, returnCurrentUser)
 
 async function getModels (req, res, next) {
   try {
@@ -47,6 +51,10 @@ function retrunLoginUser (req, res) {
       res.json({ success: true, token: `Bearer ${req.token}` })
       break
   }
+}
+
+function returnCurrentUser (req, res) {
+  res.json(req.user)
 }
 
 function returnSaveUser (req, res) {

@@ -5,6 +5,8 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import methodOverride from 'method-override'
 import routes from './routes'
+import passport from 'passport'
+import passportMiddleware from './middleware/passport'
 
 require('dotenv').config()
 const app = express()
@@ -14,9 +16,8 @@ app.use(bodyParser.json())
 app.use(methodOverride())
 app.use(cors())
 app.use(require('express-status-monitor')({ path: '/' }))
-// connection to mongodb
-
-app.use('/api', routes)
+app.use(passport.initialize())
+app.use('/api', passportMiddleware, routes)
 
 process.on('uncaughtException', err => {
   console.log('--------------UNCAUGHT-EXCEPTION---------------')
