@@ -1,11 +1,18 @@
 import express from 'express'
 import { User } from '../../models'
+import { validateRegisterInput } from '../../middleware/validations'
 import passport from 'passport'
 
 const router = express.Router()
 const authentification = passport.authenticate('jwt', { session: false })
 
-router.post('/register', getModels, saveUser, returnSaveUser)
+router.post(
+  '/register',
+  getModels,
+  validateRegisterInput,
+  saveUser,
+  returnSaveUser
+)
 
 router.post('/login', getModels, authorrizeUser, retrunLoginUser)
 
