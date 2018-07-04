@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 // Create Schema
-const UserSchema = new Schema({
+const User = new Schema({
   name: {
     type: String,
     required: true
@@ -24,4 +24,4 @@ const UserSchema = new Schema({
   }
 })
 
-module.exports = mongoose.model('UserSchema', UserSchema, 'UserSchema')
+module.exports = mongoose.model('User', User, 'User')

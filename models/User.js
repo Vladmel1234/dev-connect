@@ -1,6 +1,6 @@
+import { User as UserSchema } from '../schemas'
 import gravatar from 'gravatar'
 import { userHelpers } from '../helpers'
-import { UserSchema } from '../schemas'
 
 export default class User {
   async saveUser ({ email, name, password, avatar }) {

@@ -53,7 +53,6 @@ function retrunLoginUser (req, res) {
     case 404:
       res.status(req.token).json({ email: 'User not found' })
       break
-
     default:
       res.json({ success: true, token: `Bearer ${req.token}` })
       break

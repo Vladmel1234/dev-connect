@@ -6,4 +6,5 @@ mongoose
   .then(() => console.log('Connected to mongoDB'))
   .catch(e => console.log(`Error accoured --> ${e}`))
 
-export UserSchema from './UserSchema'
+export User from './User'
+export Profile from './Profile'
