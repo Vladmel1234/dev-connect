@@ -56,7 +56,7 @@ export const validateProfileInput = (req, res, next) => {
 
   if (
     req.body.handle &&
-    !validator.isLength(req.body.handle, { min: 2, max: 30 })
+        !validator.isLength(req.body.handle, { min: 2, max: 30 })
   ) {
     errors.handle = 'handle must be between 2 to 30 characters'
   }
@@ -71,6 +71,106 @@ export const validateProfileInput = (req, res, next) => {
 
   if (!req.body.skills) {
     errors.handle = 'skills is required'
+  }
+
+  if (!isEmpty(errors)) {
+    res.status(400).json({
+      errors,
+      isValid: isEmpty(errors)
+    })
+  } else {
+    next()
+  }
+}
+
+export const validateExpirienceInput = (req, res, next) => {
+  let errors = {}
+
+  for (let prop of Object.keys(req.body)) {
+    req.body[prop] = !isEmpty(req.body[prop]) ? req.body[prop] : ''
+  }
+
+  if (req.body.from && !validator.toDate(req.body.from)) {
+    errors.from = 'from should be your start date'
+  }
+
+  if (req.body.to && !validator.toDate(req.body.to)) {
+    errors.to = 'from should be your end date'
+  }
+
+  if (req.body.current && !validator.isBoolean(req.body.current)) {
+    errors.current = 'need to be true or false'
+  }
+
+  if (
+    req.body.description &&
+        !validator.isLength(req.body.description, { min: 10 })
+  ) {
+    errors.description = 'description must be at last 10 cahrs'
+  }
+
+  if (!req.body.title) {
+    errors.title = 'title is required'
+  }
+
+  if (!req.body.from) {
+    errors.from = 'from is required'
+  }
+
+  if (!req.body.current) {
+    errors.current = 'current is required'
+  }
+
+  if (!isEmpty(errors)) {
+    res.status(400).json({
+      errors,
+      isValid: isEmpty(errors)
+    })
+  } else {
+    next()
+  }
+}
+
+export const validateEducationInput = (req, res, next) => {
+  let errors = {}
+
+  for (let prop of Object.keys(req.body)) {
+    req.body[prop] = !isEmpty(req.body[prop]) ? req.body[prop] : ''
+  }
+
+  if (req.body.from && !validator.toDate(req.body.from)) {
+    errors.from = 'from should be your start date'
+  }
+
+  if (req.body.to && !validator.toDate(req.body.to)) {
+    errors.to = 'from should be your end date'
+  }
+
+  if (req.body.current && !validator.isBoolean(req.body.current)) {
+    errors.current = 'need to be true or false'
+  }
+
+  if (
+    req.body.description &&
+        !validator.isLength(req.body.description, { min: 10 })
+  ) {
+    errors.description = 'description must be at last 10 cahrs'
+  }
+
+  if (!req.body.school) {
+    errors.school = 'school is required'
+  }
+
+  if (!req.body.degree) {
+    errors.degree = 'degree is required'
+  }
+
+  if (!req.body.from) {
+    errors.from = 'from is required'
+  }
+
+  if (!req.body.current) {
+    errors.current = 'current is required'
   }
 
   if (!isEmpty(errors)) {
