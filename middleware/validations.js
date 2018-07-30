@@ -30,6 +30,33 @@ export const validateRegisterInput = (req, res, next) => {
   }
 }
 
+export const validatePostIntput = (req, res, next) => {
+  let errors = {}
+
+  for (let prop of Object.keys(req.body)) {
+    req.body[prop] = !isEmpty(req.body[prop]) ? req.body[prop] : ''
+  }
+
+  if (req.body.text && !validator.isLength(req.body.text, { min: 10, max: 300 })) {
+    errors.text =
+      'your post should be more than 10 characters and less then 300'
+  }
+
+  if (!req.body.text) {
+    errors.text = 'text is requierd for the post'
+  }
+
+  if (!isEmpty(errors)) {
+    res.status(400).json({
+      errors,
+      isValid: isEmpty(errors)
+    })
+  } else {
+    next()
+  }
+}
+
+
 export const validateProfileInput = (req, res, next) => {
   let errors = {}
 
@@ -56,7 +83,7 @@ export const validateProfileInput = (req, res, next) => {
 
   if (
     req.body.handle &&
-        !validator.isLength(req.body.handle, { min: 2, max: 30 })
+    !validator.isLength(req.body.handle, { min: 2, max: 30 })
   ) {
     errors.handle = 'handle must be between 2 to 30 characters'
   }
@@ -104,7 +131,7 @@ export const validateExpirienceInput = (req, res, next) => {
 
   if (
     req.body.description &&
-        !validator.isLength(req.body.description, { min: 10 })
+    !validator.isLength(req.body.description, { min: 10 })
   ) {
     errors.description = 'description must be at last 10 cahrs'
   }
@@ -152,7 +179,7 @@ export const validateEducationInput = (req, res, next) => {
 
   if (
     req.body.description &&
-        !validator.isLength(req.body.description, { min: 10 })
+    !validator.isLength(req.body.description, { min: 10 })
   ) {
     errors.description = 'description must be at last 10 cahrs'
   }
