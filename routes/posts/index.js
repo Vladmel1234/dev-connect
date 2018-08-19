@@ -24,9 +24,31 @@ router.post(
 router.get('/', getModel, getPosts, returnPosts)
 
 // @route GET api/posts/:id
-// @desc posts route for getting all posts
-// @access Public
+// @desc posts route for getting posts of user by user ids
+// @access Private
 router.get('/:id', authentification, getModel, getPostsByUserId, returnPosts)
+
+// @route DELETE api/posts/:postId
+// @desc delte post by post id
+// @access Private
+router.delete(
+  '/:postId',
+  authentification,
+  getModel,
+  deletePost,
+  returnPosts
+)
+
+// @route POST api/posts/like/:postId
+// @desc posts route for getting posts of user by user ids
+// @access Private
+router.post(
+  '/like/:postId',
+  authentification,
+  getModel,
+  toggleLike,
+  returnPost
+)
 
 function returnPost (req, res) {
   res.json({ post: req.post })
@@ -62,6 +84,24 @@ async function getPostsByUserId (req, res, next) {
 async function createPost (req, res, next) {
   try {
     req.post = await req.model.createPost(req)
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function deletePost (req, res, next) {
+  try {
+    req.post = await req.model.deltePostById(req.params.postId, req.user._id)
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function toggleLike (req, res, next) {
+  try {
+    req.post = await req.model.toggleLike(req.params.postId, req.user._id)
     next()
   } catch (error) {
     next(error)
