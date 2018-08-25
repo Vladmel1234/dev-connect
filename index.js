@@ -7,9 +7,18 @@ import methodOverride from 'method-override'
 import routes from './routes'
 import passport from 'passport'
 import passportMiddleware from './middleware/passport'
+import { ApolloServer } from 'apollo-server-express'
+import { typeDefs, resolvers } from './graphql'
 
 require('dotenv').config()
 const app = express()
+const gqlServer = new ApolloServer({
+  typeDefs,
+  resolvers
+})
+
+gqlServer.applyMiddleware({ app })
+
 app.use(logger('dev'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -17,6 +26,7 @@ app.use(methodOverride())
 app.use(cors())
 app.use(require('express-status-monitor')({ path: '/' }))
 app.use(passport.initialize())
+
 app.use('/api', passportMiddleware, routes)
 
 process.on('uncaughtException', err => {
